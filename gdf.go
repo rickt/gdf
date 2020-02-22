@@ -33,10 +33,10 @@ import (
 //         See https://developers.google.com/admin-sdk/directory/v1/guides/delegation for more info.
 
 const (
-	credsfile  string = "/home/rick_tait/go/etc/credentials_google-drive-search-tool_3b364bf07fa7.json"
+	credsfile  string = "credentials.json"
 	drivescope string = "https://www.googleapis.com/auth/drive.readonly"
 	pagesize   int64  = 1000
-	who        string = "rickt@rickt.org"
+	who        string = "you@you.com"
 )
 
 // Get an authenticated http client
