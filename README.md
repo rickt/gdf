@@ -11,9 +11,10 @@ $ gdf <string or strings>
 Example Usage:
 ```
 $ gdf Queen Elizabeth II
-| 3.9 MB| Queen Elizabeth II (popart).png
+|  3.9 MB |   4 hours ago | Queen Elizabeth II (popart).png
+1 files found.
 $ gdf foobarbaz.png
-No files found.
+0 files found.
 ```
 
 ## Compiling ##
