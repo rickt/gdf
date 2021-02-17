@@ -74,11 +74,11 @@ func main() {
 		log.Fatalf("error creating Google Drive client: %v", err)
 	}
 
-	// Search for files with filenames containing argv[1:]
+	// Search Drive for files with filenames containing argv[1:]
 	files, err := dc.Files.List().
 		Fields("nextPageToken, files(id, mimeType, modifiedTime, name, size)").
 		PageSize(pagesize).
-		Q("name contains '" + strings.Join(os.Args[1:], " ") + "'").
+		Q("name contains '" + strings.Join(os.Args[1:], " ") + "' and trashed = false").
 		SupportsAllDrives(true).
 		Do()
 	if err != nil {
