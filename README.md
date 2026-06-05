@@ -1,27 +1,68 @@
-# gdf #
-gdf: Google Drive Find -- Search for a file in Google Drive using a service account and the (Golang) Google Drive API (v3)
+# gdf
 
-Sometimes you just need to be able to verify via command line if a file exists in Google Drive. `gdf` is a very quick and dirty way to let you do that. 
+`gdf` is a small command-line tool for searching Google Drive filenames with a Google service account and the Google Drive API v3.
 
-## Usage ##
-Basic Usage:
-``` 
-$ gdf <string or strings>
+## Build
+
+This project now uses Go modules. Use Go 1.25.8 or newer.
+
+```sh
+go mod tidy
+go build -o gdf .
 ```
-Example Usage:
+
+To install it into your Go binary directory:
+
+```sh
+go install .
 ```
-$ gdf Queen Elizabeth II
+
+## Usage
+
+```sh
+./gdf [flags] <search terms>
+```
+
+Examples:
+
+```sh
+./gdf Queen Elizabeth II
 |  3.9 MB |   4 hours ago | Queen Elizabeth II (popart).png
 1 files found.
-$ gdf foobarbaz.png
+
+./gdf foobarbaz.png
 0 files found.
 ```
 
-## Compiling ##
-```
-go get github.com/dustin/go-humanize
-go get golang.org/x/oauth2/google
-go get google.golang.org/api/drive/v3
+Flags:
+
+```text
+-credentials string  service account JSON credentials file
+-subject string      Google Workspace user to impersonate
+-page-size int       Google Drive API page size, 1-1000
+-all-drives          search all shared drives instead of the default user corpus
 ```
 
+Environment variables can also provide defaults:
 
+```sh
+export GDF_CREDENTIALS=/path/to/credentials.json
+export GDF_SUBJECT=you@example.com
+export GDF_PAGE_SIZE=1000
+export GDF_ALL_DRIVES=false
+```
+
+If `-credentials` and `GDF_CREDENTIALS` are not set, `gdf` reads `credentials.json` from the current directory.
+If `-subject` and `GDF_SUBJECT` are not set, `gdf` searches as the service account itself. That usually returns far fewer files than a delegated Google Workspace user search.
+
+## Google Setup
+
+The service account needs:
+
+- Google Drive API enabled in its Google Cloud project.
+- Domain-wide delegation enabled if you use `-subject` or `GDF_SUBJECT`.
+- The Drive readonly scope granted by your Google Workspace administrator:
+
+```text
+https://www.googleapis.com/auth/drive.readonly
+```
